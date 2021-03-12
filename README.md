@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/nizarhdt/vertical_barchart/blob/master/screenshot/ss.png?raw=true" height="400" alt="Vertical BarChart" />
+  <img src="https://github.com/nizarhdt/vertical_barchart/blob/master/screenshot/ss-simple.png?raw=true" height="400" alt="Vertical BarChart" />
 </p>
 
 ## Key Features
