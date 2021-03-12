@@ -100,17 +100,17 @@ VerticalBarchart(
 |  Properties |   Description|
 | ------------ | ------------ |
 |`background`|Background color of the container|
-|`labelColor`|Color of the label, default is Colors.indigo|
-|`tooltipColor`|Color of the tooltip shown at right side of bar, default is COlors.indigo|
-|`maxX`|Maximum size of bars, use your List<VBarChartModel> biggest value, or you can choose more than it.	|
+|`labelColor`|Color of the label, default is `Colors.indigo`|
+|`tooltipColor`|Color of the tooltip shown at right side of bar, default is `COlors.indigo`|
+|`maxX`|Maximum size of bars, use your `List<VBarChartModel>` biggest value, or you can choose more than it.	|
 |`labelSizeFactor`|Width of label space reserved, range is from 0.0 - 0.5, default is 0.33|
 |`showLegend`|Show or hide legend, the legend must not be null.|
 |`data`|Your Bar Data.|
 |`legend`|Legend data, use legend as group of colors of the bar.|
-|`legendPosition`|Position of legend, LegendPosition.TOP or LegendPosition.BOTTOM, default is LegendPosition.BOTTOM|
+|`legendPosition`|Position of legend, `LegendPosition.TOP` or `LegendPosition.BOTTOM`, default is `LegendPosition.BOTTOM`|
 
 ## Support
 
-If this plugin was useful to you, helped you to deliver your app, saved you a lot of time, or you just want to support the project, I would be very grateful if you buy me a cup of coffee.
+I would be very grateful if you buy me a cup of coffee.
 
 <a href="https://www.buymeacoffee.com/nizarhdt" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
