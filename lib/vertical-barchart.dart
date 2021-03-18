@@ -3,23 +3,23 @@ import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 
 class VerticalBarchart extends StatefulWidget {
-  final Color background;
+  final Color? background;
   //Background color of the container
   //
   //
   //
-  final Color labelColor;
+  final Color? labelColor;
   //Color of the label, default is Colors.indigo
   //
   //
   //
-  final Color tooltipColor;
+  final Color? tooltipColor;
   //Color of the tooltip shown at right side of bar, default is COlors.indigo
   //
   //
   //
   final double maxX;
-  //Maximum size of bars, use your List<VBarChartModel> biggest value, or you can choose more than it.
+  //Maximum size of bars, use your List<VBarChartModel> biggest value, or you can choose more than it. default is 20
   //
   //
   //
@@ -33,25 +33,25 @@ class VerticalBarchart extends StatefulWidget {
   //
   //
   //
-  final List<VBarChartModel> data;
+  final List<VBarChartModel>? data;
   //Your Bar Data.
   //
   //
   //
-  final List<Vlegend> legend;
+  final List<Vlegend>? legend;
   //Legend data, use legend as group of colors of the bar.
   //
   //
   //
-  final LegendPosition legendPosition;
+  final LegendPosition? legendPosition;
   //Position of legend, LegendPosition.TOP or LegendPosition.BOTTOM, default is LegendPosition.BOTTOM
   //
   //
   //
 
   const VerticalBarchart({
-    Key key,
-    this.maxX,
+    Key? key,
+    this.maxX = 20,
     this.data,
     this.labelSizeFactor = 0.33,
     this.background = Colors.white,
@@ -67,7 +67,7 @@ class VerticalBarchart extends StatefulWidget {
 }
 
 class VerticalBarchartState extends State<VerticalBarchart> {
-  double width;
+  late double width;
   double sizePadding = 10;
   int touchIndex = -1;
   double animWidth = 0;
@@ -95,7 +95,7 @@ class VerticalBarchartState extends State<VerticalBarchart> {
                 runSpacing: 6,
                 spacing: 20,
                 alignment: WrapAlignment.center,
-                children: widget.legend,
+                children: widget.legend!,
               ),
             ),
           );
@@ -105,13 +105,13 @@ class VerticalBarchartState extends State<VerticalBarchart> {
       }
 
       try {
-        if (widget.data.length > 0) {
-          widget.data.forEach((e) {
+        if (widget.data!.length > 0) {
+          widget.data!.forEach((e) {
             isi.add(GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTapDown: (a) {
                 setState(() {
-                  touchIndex = e.index;
+                  touchIndex = e.index!;
                 });
               },
               onTapCancel: () {
@@ -152,7 +152,7 @@ class VerticalBarchartState extends State<VerticalBarchart> {
                 runSpacing: 6,
                 spacing: 20,
                 alignment: WrapAlignment.center,
-                children: widget.legend,
+                children: widget.legend!,
               ),
             ),
           );
@@ -172,8 +172,8 @@ class VerticalBarchartState extends State<VerticalBarchart> {
     });
   }
 
-  Widget _barData(String label, Color labelColor, String tooltip,
-      Color tooltipColor, double jml, List<Color> colors, int index) {
+  Widget _barData(String? label, Color? labelColor, String? tooltip,
+      Color? tooltipColor, double jml, List<Color>? colors, int? index) {
     double maxLabel =
         widget.labelSizeFactor > 0.5 ? 0.5 : widget.labelSizeFactor;
     double sizeLabel = width * maxLabel - 16 - (sizePadding * 2);
@@ -205,7 +205,7 @@ class VerticalBarchartState extends State<VerticalBarchart> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment(offSetX, 1.0),
-              colors: colors,
+              colors: colors ?? [Colors.teal, Colors.indigo],
             ),
             color: Colors.teal),
         duration: Duration(milliseconds: 300),

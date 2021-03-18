@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class Vlegend extends StatelessWidget {
-  final Color color;
-  final String text;
+  final Color? color;
+  final String? text;
   final bool isSquare;
-  final double size;
-  final Color textColor;
+  final double? size;
+  final Color? textColor;
 
   const Vlegend({
-    Key key,
+    Key? key,
     this.color,
     this.text,
-    this.isSquare,
+    this.isSquare = false,
     this.size = 10,
     this.textColor = const Color(0xff505050),
   }) : super(key: key);
@@ -33,7 +33,7 @@ class Vlegend extends StatelessWidget {
           width: 4,
         ),
         Text(
-          text,
+          "$text",
           style: TextStyle(
               fontSize: size, fontWeight: FontWeight.w400, color: textColor),
         )

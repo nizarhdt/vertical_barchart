@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class VBarChartModel {
-  final int index;
+  final int? index;
   //used for touch animation
   //
   //
   //
-  final String label;
+  final String? label;
   //text shown on left side of bar
   //
   //
   //
-  final String tooltip;
+  final String? tooltip;
   //text shown on right side of bar
   //
   //
@@ -21,7 +21,7 @@ class VBarChartModel {
   //
   //
   //
-  final List<Color> colors;
+  final List<Color>? colors;
   //Colors of bar, liniergradient start from left to right
   //
   //
