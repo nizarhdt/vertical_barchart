@@ -48,6 +48,11 @@ class VerticalBarchart extends StatefulWidget {
   //
   //
   //
+  final double tooltipSize;
+  //Width of tooltip
+  //
+  //
+  //
 
   const VerticalBarchart({
     Key? key,
@@ -60,6 +65,7 @@ class VerticalBarchart extends StatefulWidget {
     this.labelColor = Colors.indigo,
     this.tooltipColor = Colors.indigo,
     this.legendPosition = LegendPosition.BOTTOM,
+    this.tooltipSize = 40
   }) : super(key: key);
 
   @override
@@ -177,9 +183,8 @@ class VerticalBarchartState extends State<VerticalBarchart> {
     double maxLabel =
         widget.labelSizeFactor > 0.5 ? 0.5 : widget.labelSizeFactor;
     double sizeLabel = width * maxLabel - 16 - (sizePadding * 2);
-    double sizeTooltip = 40;
     double sizeFullBar =
-        width - sizeLabel - sizeTooltip - 16 - (sizePadding * 2);
+        width - sizeLabel - widget.tooltipSize - 16 - (sizePadding * 2);
     double sizeBar = jml / widget.maxX * sizeFullBar;
     double offSetX = widget.maxX - jml + 1;
     double sizeBarHeight = 8;
@@ -215,7 +220,7 @@ class VerticalBarchartState extends State<VerticalBarchart> {
         width: 8,
       ),
       SizedBox(
-        width: sizeTooltip,
+        width: widget.tooltipSize,
         child: Text(
           tooltip ?? "",
           style: TextStyle(
