@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
       index: 3,
       label: "Chilli",
       colors: [Colors.teal, Colors.indigo],
-      jumlah: 5,
+      jumlah: 1,
       tooltip: "5 Pcs",
     ),
     VBarChartModel(
@@ -111,6 +111,8 @@ class _MyHomePageState extends State<MyHomePage> {
       data: bardata,
       showLegend: true,
       showBackdrop: true,
+      barStyle: BarStyle.CIRCLE,
+      alwaysShowDescription: true,
       legend: [
         Vlegend(
           isSquare: false,

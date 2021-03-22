@@ -1,3 +1,8 @@
+## [2.0.0+2] - 2021.03.22
+
+- Add BarStyle : Default or Circle
+- Add config for Bar Size
+
 ## [2.0.0+1] - 2021.03.22
 
 - Add Backdrop Bars, option to show/hide.

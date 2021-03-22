@@ -69,23 +69,35 @@ class VerticalBarchart extends StatefulWidget {
   //
   //
   //
+  final double? barSize;
+  //size of bars
+  //
+  //
+  //
+  final BarStyle? barStyle;
+  //style of bars : DEFAULT / CIRCLE
+  //
+  //
+  //
 
-  const VerticalBarchart({
-    Key? key,
-    this.maxX = 20,
-    this.data,
-    this.labelSizeFactor = 0.33,
-    this.background = Colors.white,
-    this.showLegend = false,
-    this.legend,
-    this.labelColor = Colors.indigo,
-    this.tooltipColor = Colors.indigo,
-    this.legendPosition = LegendPosition.BOTTOM,
-    this.tooltipSize = 40,
-    this.alwaysShowDescription = false,
-    this.showBackdrop = false,
-    this.backdropColor = const Color(0xFFE0E0E0),
-  }) : super(key: key);
+  const VerticalBarchart(
+      {Key? key,
+      this.maxX = 20,
+      this.data,
+      this.labelSizeFactor = 0.33,
+      this.background = Colors.white,
+      this.showLegend = false,
+      this.legend,
+      this.labelColor = Colors.indigo,
+      this.tooltipColor = Colors.indigo,
+      this.legendPosition = LegendPosition.BOTTOM,
+      this.tooltipSize = 40,
+      this.alwaysShowDescription = false,
+      this.showBackdrop = false,
+      this.backdropColor = const Color(0xFFE0E0E0),
+      this.barSize = 8,
+      this.barStyle = BarStyle.DEFAULT})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => VerticalBarchartState();
@@ -161,16 +173,27 @@ class VerticalBarchartState extends State<VerticalBarchart> {
               },
               child: Container(
                   padding: EdgeInsets.symmetric(vertical: 4),
-                  child: _barData(
-                      e.label,
-                      widget.labelColor,
-                      e.tooltip,
-                      widget.tooltipColor,
-                      e.jumlah,
-                      e.colors,
-                      e.index,
-                      widget.alwaysShowDescription ? true : false,
-                      e.description)),
+                  child: widget.barStyle == BarStyle.DEFAULT
+                      ? _barData(
+                          e.label,
+                          widget.labelColor,
+                          e.tooltip,
+                          widget.tooltipColor,
+                          e.jumlah,
+                          e.colors,
+                          e.index,
+                          widget.alwaysShowDescription ? true : false,
+                          e.description)
+                      : _barDataCircle(
+                          e.label,
+                          widget.labelColor,
+                          e.tooltip,
+                          widget.tooltipColor,
+                          e.jumlah,
+                          e.colors,
+                          e.index,
+                          widget.alwaysShowDescription ? true : false,
+                          e.description)),
             ));
           });
         } else {
@@ -221,7 +244,7 @@ class VerticalBarchartState extends State<VerticalBarchart> {
       String? tooltip,
       Color? tooltipColor,
       double jml,
-      List<Color>? colors,
+      List<Color> colors,
       int? index,
       bool showDesc,
       Widget? description) {
@@ -232,7 +255,137 @@ class VerticalBarchartState extends State<VerticalBarchart> {
         width - sizeLabel - widget.tooltipSize - 16 - (sizePadding * 2);
     double sizeBar = jml / widget.maxX * sizeFullBar;
     double offSetX = widget.maxX - jml + 1;
-    double sizeBarHeight = 8;
+    double sizeBarHeight = (widget.barSize!) < 8 ? 8 : widget.barSize!;
+
+    return Row(
+        crossAxisAlignment: widget.alwaysShowDescription
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: sizeLabel,
+            child: Text(
+              label ?? "",
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                  fontSize: 12, fontWeight: FontWeight.bold, color: labelColor),
+            ),
+          ),
+          SizedBox(
+            width: 8,
+          ),
+          Expanded(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(children: [
+                Stack(children: [
+                  widget.showBackdrop
+                      ? AnimatedContainer(
+                          width: sizeFullBar * animWidth,
+                          height: touchIndex == index
+                              ? sizeBarHeight + 5
+                              : sizeBarHeight,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: widget.backdropColor),
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.fastOutSlowIn,
+                        )
+                      : Container(),
+                  AnimatedContainer(
+                    width: sizeBar * animWidth,
+                    height:
+                        touchIndex == index ? sizeBarHeight + 5 : sizeBarHeight,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment(offSetX, 1.0),
+                          colors: colors,
+                        )),
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.fastOutSlowIn,
+                  ),
+                ]),
+                SizedBox(
+                  width: 8,
+                ),
+                SizedBox(
+                  width: widget.tooltipSize,
+                  child: Text(
+                    tooltip ?? "",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: tooltipColor),
+                  ),
+                ),
+              ]),
+              ExpandedSection(
+                  expand: showIndex == index ? !showDesc : showDesc,
+                  child: description ?? Container())
+            ]),
+          ),
+        ]);
+  }
+
+  Widget _barDataCircle(
+      String? label,
+      Color? labelColor,
+      String? tooltip,
+      Color? tooltipColor,
+      double jml,
+      List<Color> colors,
+      int? index,
+      bool showDesc,
+      Widget? description) {
+    double maxLabel =
+        widget.labelSizeFactor > 0.5 ? 0.5 : widget.labelSizeFactor;
+    double sizeLabel = width * maxLabel - 16 - (sizePadding * 2);
+    double sizeFullBar =
+        width - sizeLabel - widget.tooltipSize - 16 - (sizePadding * 2);
+    double sizeBar = jml / widget.maxX * sizeFullBar;
+    double sizeBarHeight = (widget.barSize!) < 8 ? 8 : widget.barSize!;
+    double spacing = 2;
+
+    int circleFullWidth = sizeFullBar ~/ (sizeBarHeight + spacing);
+    int circleWidth = sizeBar ~/ (sizeBarHeight + spacing);
+
+    List<Widget> circleBackdrop = [];
+    List<Widget> circleContent = [];
+    for (int i = 0; i < circleFullWidth; i++) {
+      circleBackdrop.add(Container(
+        width: sizeBarHeight,
+        height: sizeBarHeight,
+        decoration:
+            BoxDecoration(shape: BoxShape.circle, color: widget.backdropColor),
+      ));
+    }
+    for (int i = 0; i < circleWidth; i++) {
+      double offsetX = circleFullWidth.toDouble() - (i + 1);
+      print(offsetX);
+      circleContent.add(Container(
+        width: sizeBarHeight,
+        height: sizeBarHeight,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: colors.first,
+          gradient: LinearGradient(
+            begin: Alignment((i + 0.5) * (-1), 0),
+            end: Alignment(offsetX, 0),
+            tileMode: TileMode.clamp,
+            colors: colors,
+          ),
+        ),
+      ));
+    }
+    if (circleContent.length <= 0)
+      circleContent.add(Container(
+        width: sizeBarHeight,
+        height: sizeBarHeight,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle, color: colors.first.withOpacity(0.5)),
+      ));
 
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       SizedBox(
@@ -252,31 +405,15 @@ class VerticalBarchartState extends State<VerticalBarchart> {
           Row(children: [
             Stack(children: [
               widget.showBackdrop
-                  ? AnimatedContainer(
-                      width: sizeFullBar * animWidth,
-                      height: touchIndex == index
-                          ? sizeBarHeight + 5
-                          : sizeBarHeight,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: widget.backdropColor),
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.fastOutSlowIn,
+                  ? Wrap(
+                      spacing: spacing,
+                      children: circleBackdrop,
                     )
                   : Container(),
-              AnimatedContainer(
-                width: sizeBar * animWidth,
-                height: touchIndex == index ? sizeBarHeight + 5 : sizeBarHeight,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment(offSetX, 1.0),
-                      colors: colors ?? [Colors.teal, Colors.indigo],
-                    )),
-                duration: Duration(milliseconds: 300),
-                curve: Curves.fastOutSlowIn,
-              ),
+              Wrap(
+                spacing: spacing,
+                children: circleContent,
+              )
             ]),
             SizedBox(
               width: 8,
@@ -302,3 +439,4 @@ class VerticalBarchartState extends State<VerticalBarchart> {
 }
 
 enum LegendPosition { TOP, BOTTOM }
+enum BarStyle { DEFAULT, CIRCLE }

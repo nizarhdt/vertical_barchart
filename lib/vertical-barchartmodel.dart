@@ -21,7 +21,7 @@ class VBarChartModel {
   //
   //
   //
-  final List<Color>? colors;
+  final List<Color> colors;
   //Colors of bar, liniergradient start from left to right
   //
   //

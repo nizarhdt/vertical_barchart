@@ -11,6 +11,7 @@
 
 <p align="center">
   <img src="https://github.com/nizarhdt/vertical_barchart/blob/master/screenshot/ss-simple.png?raw=true" height="400" alt="Vertical BarChart" />
+  <img src="https://github.com/nizarhdt/vertical_barchart/blob/master/screenshot/Screenshot_20210322-144836.png?raw=true" height="400" alt="Vertical BarChart" />
 </p>
 
 ## Key Features
@@ -153,6 +154,8 @@ VerticalBarchart(
 | `alwaysShowDescription` | Show or hide all description, `true` will override the tapping function on bars                         |
 | `showBackdrop`          | Show or hide backdrop of bars                                                                           |
 | `backdropColor`         | Set custom colors of backdrop                                                                           |
+| `barSize`               | Set size of bars                                                                                        |
+| `barStyle`              | Set style of bar : `BarStyle.DEFAULT` or `BarStyle.CIRCLE`                                              |
 
 ## Support
 
