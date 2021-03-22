@@ -40,6 +40,10 @@ class _MyHomePageState extends State<MyHomePage> {
       colors: [Colors.orange, Colors.deepOrange],
       jumlah: 20,
       tooltip: "20 Pcs",
+      description: Text(
+        "Most selling fruit last week",
+        style: TextStyle(fontSize: 10),
+      ),
     ),
     VBarChartModel(
       index: 1,
@@ -47,6 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
       colors: [Colors.orange, Colors.deepOrange],
       jumlah: 55,
       tooltip: "55 Pcs",
+      description: Text(
+        "Most selling fruit this week",
+        style: TextStyle(fontSize: 10),
+      ),
     ),
     VBarChartModel(
       index: 2,
@@ -75,6 +83,10 @@ class _MyHomePageState extends State<MyHomePage> {
       colors: [Colors.teal, Colors.indigo],
       jumlah: 30,
       tooltip: "30 Pcs",
+      description: Text(
+        "Favorites vegetables",
+        style: TextStyle(fontSize: 10),
+      ),
     ),
   ];
 
@@ -84,13 +96,12 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title ?? ""),
       ),
-      body: Container(
-          height: 200,
+      body: SingleChildScrollView(
           child: Column(
-            children: [
-              _buildGrafik(bardata),
-            ],
-          )),
+        children: [
+          _buildGrafik(bardata),
+        ],
+      )),
     );
   }
 
@@ -99,6 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
       maxX: 55,
       data: bardata,
       showLegend: true,
+      showBackdrop: true,
       legend: [
         Vlegend(
           isSquare: false,

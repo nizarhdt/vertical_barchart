@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
-  <a href="https://github.com/nizarhdt/vertical_barchart/tree/master/example">Examples</a> •
+  <a href="https://github.com/nizarhdt/vertical_barchart/tree/master/example">Examples</a>
 </p>
 
 <p align="center">
@@ -15,17 +15,20 @@
 
 ## Key Features
 
-* Easy to use
-* Vertical responsive bars
-* Initial and touch animation
-* Legend
+- Easy to use
+- Vertical responsive bars
+- Initial and touch animation
+- Legend
+- Bars Description
 
 ## packages.yaml
+
 ```yaml
 vertical_barchart: <lastest version>
 ```
 
 ## Import
+
 ```dart
 import 'package:vertical_barchart/vertical_barchart.dart';
 ```
@@ -40,6 +43,10 @@ List<VBarChartModel> bardata = [
       colors: [Colors.orange, Colors.deepOrange],
       jumlah: 20,
       tooltip: "20 Pcs",
+      description: Text(
+        "Most selling fruit last week",
+        style: TextStyle(fontSize: 10),
+      ),
     ),
     VBarChartModel(
       index: 1,
@@ -47,6 +54,10 @@ List<VBarChartModel> bardata = [
       colors: [Colors.orange, Colors.deepOrange],
       jumlah: 55,
       tooltip: "55 Pcs",
+      description: Text(
+        "Most selling fruit this week",
+        style: TextStyle(fontSize: 10),
+      ),
     ),
     VBarChartModel(
       index: 2,
@@ -75,9 +86,13 @@ List<VBarChartModel> bardata = [
       colors: [Colors.teal, Colors.indigo],
       jumlah: 30,
       tooltip: "30 Pcs",
+      description: Text(
+        "Favorites vegetables",
+        style: TextStyle(fontSize: 10),
+      ),
     ),
   ];
-  
+
 VerticalBarchart(
       maxX: 55,
       data: bardata,
@@ -97,20 +112,50 @@ VerticalBarchart(
     ),
 ```
 
-|  Properties |   Description|
-| ------------ | ------------ |
-|`background`|Background color of the container|
-|`labelColor`|Color of the label, default is `Colors.indigo`|
-|`tooltipColor`|Color of the tooltip shown at right side of bar, default is `COlors.indigo`|
-|`maxX`|Maximum size of bars, use your `List<VBarChartModel>` biggest value, or you can choose more than it.	|
-|`labelSizeFactor`|Width of label space reserved, range is from 0.0 - 0.5, default is 0.33|
-|`showLegend`|Show or hide legend, the legend must not be null.|
-|`data`|Your Bar Data.|
-|`legend`|Legend data, use legend as group of colors of the bar.|
-|`legendPosition`|Position of legend, `LegendPosition.TOP` or `LegendPosition.BOTTOM`, default is `LegendPosition.BOTTOM`|
+Example `alwaysShowDescription` and `showBackdrop`:
+
+```dart
+VerticalBarchart(
+      maxX: 55,
+      data: bardata,
+      showLegend: true,
+      alwaysShowDescription: true,
+      showBackdrop: true,
+      legend: [
+        Vlegend(
+          isSquare: false,
+          color: Colors.orange,
+          text: "Fruits",
+        ),
+        Vlegend(
+          isSquare: false,
+          color: Colors.teal,
+          text: "Vegetables",
+        )
+      ],
+    ),
+```
+
+<img src="https://github.com/nizarhdt/vertical_barchart/blob/master/screenshot/Screenshot_20210322-092328.png?raw=true" height="400" alt="Vertical BarChart Example" />
+
+| Properties              | Description                                                                                             |
+| ----------------------- | ------------------------------------------------------------------------------------------------------- |
+| `background`            | Background color of the container                                                                       |
+| `labelColor`            | Color of the label, default is `Colors.indigo`                                                          |
+| `tooltipColor`          | Color of the tooltip shown at right side of bar, default is `COlors.indigo`                             |
+| `tooltipSize`           | Tooltip width                                                                                           |
+| `maxX`                  | Maximum size of bars, use your `List<VBarChartModel>` biggest value, or you can choose more than it.    |
+| `labelSizeFactor`       | Width of label space reserved, range is from 0.0 - 0.5, default is 0.33                                 |
+| `showLegend`            | Show or hide legend, the legend must not be null.                                                       |
+| `data`                  | Your Bar Data.                                                                                          |
+| `legend`                | Legend data, use legend as group of colors of the bar.                                                  |
+| `legendPosition`        | Position of legend, `LegendPosition.TOP` or `LegendPosition.BOTTOM`, default is `LegendPosition.BOTTOM` |
+| `alwaysShowDescription` | Show or hide all description, `true` will override the tapping function on bars                         |
+| `showBackdrop`          | Show or hide backdrop of bars                                                                           |
+| `backdropColor`         | Set custom colors of backdrop                                                                           |
 
 ## Support
 
 I would be very grateful if you buy me a cup of coffee.
 
-<a href="https://www.buymeacoffee.com/nizarhdt" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+<a href="https://www.buymeacoffee.com/nizarhdt" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/guidelines/download-assets-2.svg" alt="Buy Me A Coffee" style="height: 41px !important;" ></a>

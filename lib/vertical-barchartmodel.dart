@@ -26,12 +26,17 @@ class VBarChartModel {
   //
   //
   //
+  final Widget? description;
+  //Description of bars
+  //
+  //
+  //
 
-  const VBarChartModel({
-    this.index,
-    this.label,
-    this.tooltip,
-    this.jumlah = 0,
-    this.colors = const [Colors.teal, Colors.indigo],
-  });
+  const VBarChartModel(
+      {this.index,
+      this.label,
+      this.tooltip,
+      this.jumlah = 0,
+      this.colors = const [Colors.teal, Colors.indigo],
+      this.description});
 }

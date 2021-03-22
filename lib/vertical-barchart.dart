@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vertical_barchart/extension/expandedSection.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 
@@ -14,7 +15,7 @@ class VerticalBarchart extends StatefulWidget {
   //
   //
   final Color? tooltipColor;
-  //Color of the tooltip shown at right side of bar, default is COlors.indigo
+  //Color of the tooltip shown at right side of bar, default is Colors.indigo
   //
   //
   //
@@ -53,6 +54,21 @@ class VerticalBarchart extends StatefulWidget {
   //
   //
   //
+  final bool alwaysShowDescription;
+  //Show description of bars, override tap function.
+  //
+  //
+  //
+  final bool showBackdrop;
+  //show or hide backdrop of bars, default is false.
+  //
+  //
+  //
+  final Color? backdropColor;
+  //Backdrop color, default is grey.
+  //
+  //
+  //
 
   const VerticalBarchart({
     Key? key,
@@ -65,7 +81,10 @@ class VerticalBarchart extends StatefulWidget {
     this.labelColor = Colors.indigo,
     this.tooltipColor = Colors.indigo,
     this.legendPosition = LegendPosition.BOTTOM,
-    this.tooltipSize = 40
+    this.tooltipSize = 40,
+    this.alwaysShowDescription = false,
+    this.showBackdrop = false,
+    this.backdropColor = const Color(0xFFE0E0E0),
   }) : super(key: key);
 
   @override
@@ -76,6 +95,7 @@ class VerticalBarchartState extends State<VerticalBarchart> {
   late double width;
   double sizePadding = 10;
   int touchIndex = -1;
+  int showIndex = -1;
   double animWidth = 0;
 
   @override
@@ -115,6 +135,15 @@ class VerticalBarchartState extends State<VerticalBarchart> {
           widget.data!.forEach((e) {
             isi.add(GestureDetector(
               behavior: HitTestBehavior.opaque,
+              onTap: () {
+                setState(() {
+                  widget.alwaysShowDescription
+                      ? showIndex = -1
+                      : showIndex == e.index!
+                          ? showIndex = -1
+                          : showIndex = e.index!;
+                });
+              },
               onTapDown: (a) {
                 setState(() {
                   touchIndex = e.index!;
@@ -132,8 +161,16 @@ class VerticalBarchartState extends State<VerticalBarchart> {
               },
               child: Container(
                   padding: EdgeInsets.symmetric(vertical: 4),
-                  child: _barData(e.label, widget.labelColor, e.tooltip,
-                      widget.tooltipColor, e.jumlah, e.colors, e.index)),
+                  child: _barData(
+                      e.label,
+                      widget.labelColor,
+                      e.tooltip,
+                      widget.tooltipColor,
+                      e.jumlah,
+                      e.colors,
+                      e.index,
+                      widget.alwaysShowDescription ? true : false,
+                      e.description)),
             ));
           });
         } else {
@@ -178,8 +215,16 @@ class VerticalBarchartState extends State<VerticalBarchart> {
     });
   }
 
-  Widget _barData(String? label, Color? labelColor, String? tooltip,
-      Color? tooltipColor, double jml, List<Color>? colors, int? index) {
+  Widget _barData(
+      String? label,
+      Color? labelColor,
+      String? tooltip,
+      Color? tooltipColor,
+      double jml,
+      List<Color>? colors,
+      int? index,
+      bool showDesc,
+      Widget? description) {
     double maxLabel =
         widget.labelSizeFactor > 0.5 ? 0.5 : widget.labelSizeFactor;
     double sizeLabel = width * maxLabel - 16 - (sizePadding * 2);
@@ -189,7 +234,7 @@ class VerticalBarchartState extends State<VerticalBarchart> {
     double offSetX = widget.maxX - jml + 1;
     double sizeBarHeight = 8;
 
-    return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       SizedBox(
         width: sizeLabel,
         child: Text(
@@ -202,30 +247,55 @@ class VerticalBarchartState extends State<VerticalBarchart> {
       SizedBox(
         width: 8,
       ),
-      AnimatedContainer(
-        width: sizeBar * animWidth,
-        height: touchIndex == index ? sizeBarHeight + 5 : sizeBarHeight,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment(offSetX, 1.0),
-              colors: colors ?? [Colors.teal, Colors.indigo],
+      Expanded(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(children: [
+            Stack(children: [
+              widget.showBackdrop
+                  ? AnimatedContainer(
+                      width: sizeFullBar * animWidth,
+                      height: touchIndex == index
+                          ? sizeBarHeight + 5
+                          : sizeBarHeight,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: widget.backdropColor),
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.fastOutSlowIn,
+                    )
+                  : Container(),
+              AnimatedContainer(
+                width: sizeBar * animWidth,
+                height: touchIndex == index ? sizeBarHeight + 5 : sizeBarHeight,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment(offSetX, 1.0),
+                      colors: colors ?? [Colors.teal, Colors.indigo],
+                    )),
+                duration: Duration(milliseconds: 300),
+                curve: Curves.fastOutSlowIn,
+              ),
+            ]),
+            SizedBox(
+              width: 8,
             ),
-            color: Colors.teal),
-        duration: Duration(milliseconds: 300),
-        curve: Curves.fastOutSlowIn,
-      ),
-      SizedBox(
-        width: 8,
-      ),
-      SizedBox(
-        width: widget.tooltipSize,
-        child: Text(
-          tooltip ?? "",
-          style: TextStyle(
-              fontSize: 12, fontWeight: FontWeight.bold, color: tooltipColor),
-        ),
+            SizedBox(
+              width: widget.tooltipSize,
+              child: Text(
+                tooltip ?? "",
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: tooltipColor),
+              ),
+            ),
+          ]),
+          ExpandedSection(
+              expand: showIndex == index ? !showDesc : showDesc,
+              child: description ?? Container())
+        ]),
       ),
     ]);
   }
